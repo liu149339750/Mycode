@@ -1,0 +1,7 @@
+bin/
+gen/
+.classpath
+.project
+test/.project
+local.properties
+build.xml
