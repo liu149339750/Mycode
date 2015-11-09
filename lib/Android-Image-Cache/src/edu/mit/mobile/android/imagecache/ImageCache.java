@@ -86,7 +86,7 @@ import android.widget.ImageView;
 public class ImageCache extends DiskCache<String, Bitmap> {
     private static final String TAG = ImageCache.class.getSimpleName();
 
-    static final boolean DEBUG = false;
+    static final boolean DEBUG = true;
 
     // whether to use Apache HttpClient or URL.openConnection()
     private static final boolean USE_APACHE_NC = true;

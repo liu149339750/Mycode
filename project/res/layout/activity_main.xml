@@ -3,14 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:staggered="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="${relativePackage}.${activityClass}" >
 
-	<com.origamilabs.library.views.StaggeredGridView
+	<com.etsy.android.grid.StaggeredGridView
         android:id="@+id/staggeredGridView1"
-        staggered:numColumns="2"
-        staggered:drawSelectorOnTop="true"
+        app:column_count="3"
+        app:column_count_portrait="3"
+        app:item_margin="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" /> 
 
 </LinearLayout>

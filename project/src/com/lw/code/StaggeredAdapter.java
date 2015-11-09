@@ -1,13 +1,11 @@
 package com.lw.code;
 
-import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.util.List;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +43,7 @@ public class StaggeredAdapter extends BaseAdapter implements ImageCache.OnImageL
 
 	@Override
 	public int getCount() {
-		System.out.println("getCount");
+		System.out.println("getCount>"+mEntries.size());
 		return mEntries.size();
 	}
 
@@ -62,6 +60,7 @@ public class StaggeredAdapter extends BaseAdapter implements ImageCache.OnImageL
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
+		try{
 		System.out.println("position="+position);
 		if(convertView == null) {
 			convertView = mInflater.inflate(R.layout.staggerd_item, null);
@@ -73,13 +72,13 @@ public class StaggeredAdapter extends BaseAdapter implements ImageCache.OnImageL
 			holder = (ViewHolder) convertView.getTag();
 		DemoEntry entry = mEntries.get(position);
 		holder.text.setText(entry.title);
-		holder.image.setTag(R.id.ic__uri, Uri.parse(entry.smallImage));
+		holder.image.setTag(R.id.ic__uri, Uri.parse(entry.icon));
 		
 		int imageId = mCache.getNewID();
         Drawable d = null;
         try {
-            d = mCache.loadImage(imageId, Uri.parse(entry.smallImage), mDefaultWidth, mDefaultHeight);
-        } catch (final IOException e) {
+            d = mCache.loadImage(imageId, Uri.parse(entry.icon), mDefaultWidth, mDefaultHeight);
+        } catch ( Exception e) {
             e.printStackTrace();
         }
         if (d != null) {
@@ -87,7 +86,9 @@ public class StaggeredAdapter extends BaseAdapter implements ImageCache.OnImageL
         } else {
             mImageViewsToLoad.put(imageId, new SoftReference<ImageView>(holder.image));
         }
-        
+	}catch(Exception e) {
+		e.printStackTrace();
+	}
 		return convertView;
 	}
 	
@@ -98,6 +99,7 @@ public class StaggeredAdapter extends BaseAdapter implements ImageCache.OnImageL
 
 	@Override
 	public void onImageLoaded(int id, Uri imageUri, Drawable image) {
+		try{
         final SoftReference<ImageView> ivRef = mImageViewsToLoad.get(id);
         if (ivRef == null) {
             return;
@@ -111,6 +113,9 @@ public class StaggeredAdapter extends BaseAdapter implements ImageCache.OnImageL
             iv.setImageDrawable(image);
         }
         mImageViewsToLoad.remove(id);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
     private static class ViewDimensionCache {

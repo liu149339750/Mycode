@@ -1,8 +1,13 @@
 package com.lw.code;
 
-public class DemoEntry {
+import java.io.Serializable;
+
+public class DemoEntry implements Serializable{
 
 	public String title;
-	public String smallImage;
-	public String imageUrl;
+	public String url;
+	public String icon;
+	public String detail;
+	public String minversion;
+	public String openlink;
 }
