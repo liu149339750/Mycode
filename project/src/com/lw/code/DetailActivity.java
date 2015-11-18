@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.lw.util.FileDownload;
 import com.lw.util.Util;
+import com.panwrona.downloadprogressbar.library.DownloadProgressBar;
 import com.ryg.dynamicload.internal.DLIntent;
 import com.ryg.dynamicload.internal.DLPluginManager;
 import com.ryg.dynamicload.internal.DLPluginPackage;
@@ -23,7 +24,7 @@ public class DetailActivity extends Activity{
 	private TextView mTitle;
 	private TextView mMinVersion;
 	private TextView mLink;
-	private Button mStart;
+	private DownloadProgressBar mStart;
 	private boolean isDownload;
 	private DLPluginPackage mDLPackage;
 	@Override
@@ -37,7 +38,7 @@ public class DetailActivity extends Activity{
 		mDetail = (TextView) findViewById(R.id.detail);
 		mMinVersion = (TextView) findViewById(R.id.minv);
 		mLink = (TextView) findViewById(R.id.link);
-		mStart = (Button) findViewById(R.id.start);
+		mStart = (DownloadProgressBar) findViewById(R.id.start);
 		
 		mTitle.setText(mEntry.title);
 		mDetail.setText(mEntry.detail);
@@ -64,14 +65,15 @@ public class DetailActivity extends Activity{
 	}
 
 	protected void downloadOrstart() {
-		if(isDownload) {
-	        DLPluginManager pluginManager = DLPluginManager.getInstance(this);
-	        pluginManager.startPluginActivity(this, new DLIntent(mDLPackage.packageName, mDLPackage.packageInfo.activities[0].name));
-		} else {
-			FileDownload fileDownload = new FileDownload(handler) ;
-			fileDownload.download(mEntry.url,Util.getOutFile(mEntry.url));
-			Toast.makeText(this, "开始下载", Toast.LENGTH_SHORT).show();
-		}
+		mStart.playToSuccess();
+//		if(isDownload) {
+//	        DLPluginManager pluginManager = DLPluginManager.getInstance(this);
+//	        pluginManager.startPluginActivity(this, new DLIntent(mDLPackage.packageName, mDLPackage.packageInfo.activities[0].name));
+//		} else {
+//			FileDownload fileDownload = new FileDownload(handler) ;
+//			fileDownload.download(mEntry.url,Util.getOutFile(mEntry.url));
+//			Toast.makeText(this, "开始下载", Toast.LENGTH_SHORT).show();
+//		}
 	}
 
 	private Handler handler = new Handler(new Handler.Callback() {

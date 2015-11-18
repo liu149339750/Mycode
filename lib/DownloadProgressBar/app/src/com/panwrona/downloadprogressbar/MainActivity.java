@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.panwrona.downloadprogressbar.library.DownloadProgressBar;
+import com.panwrona.downloadprogressbar.library.DownloadProgressBar.SuccessType;
 
 public class MainActivity extends Activity {
 
@@ -20,6 +21,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final DownloadProgressBar downloadProgressView = (DownloadProgressBar)findViewById(R.id.dpv3);
+//        downloadProgressView.setSuccessAnimaType(SuccessType.TYPE_START);
         final TextView successTextView = (TextView)findViewById(R.id.success_text_view);
         successTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,7 +36,10 @@ public class MainActivity extends Activity {
         downloadProgressView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                downloadProgressView.playManualProgressAnimation();
+            	if(!downloadProgressView.isPlay())
+            		downloadProgressView.playManualProgressAnimation();
+            	else
+            		downloadProgressView.abortDownload();
             }
         });
         downloadProgressView.setOnProgressUpdateListener(new DownloadProgressBar.OnProgressUpdateListener() {
@@ -45,7 +50,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onAnimationStarted() {
-                downloadProgressView.setEnabled(false);
+//                downloadProgressView.setEnabled(false);
             }
 
             @Override

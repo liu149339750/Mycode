@@ -11,7 +11,6 @@
         <attr name="lineWidth" format="dimension"/>
         <attr name="progressDuration" format="integer"/>
         <attr name="resultDuration" format="integer"/>
-        <attr name="progressBackgroundColor" format="color"/>
         <attr name="drawingColor" format="color"/>
         <attr name="progressColor" format="color"/>
         <attr name="circleBackgroundColor" format="color"/>

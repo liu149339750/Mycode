@@ -1,38 +1,22 @@
 package com.lw.code;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.FileHandler;
-
-import org.w3c.dom.Comment;
 
 import com.etsy.android.grid.StaggeredGridView;
 import com.lw.util.DataCache;
-import com.lw.util.FileDownload;
-import com.ryg.dynamicload.internal.DLIntent;
-import com.ryg.dynamicload.internal.DLPluginManager;
-import com.ryg.utils.DLUtils;
 
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
-import android.widget.Adapter;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 
 public class MainActivity extends Activity implements LoaderCallbacks<List<DemoEntry>>{
 	
@@ -42,6 +26,7 @@ public class MainActivity extends Activity implements LoaderCallbacks<List<DemoE
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		initSystemBar();
 		mGridView = (StaggeredGridView) findViewById(R.id.staggeredGridView1);
 			
 		mAdapter = new StaggeredAdapter(this, DataCache.getInstance(this).getData());
@@ -64,6 +49,30 @@ public class MainActivity extends Activity implements LoaderCallbacks<List<DemoE
 		
 	}
 	
+	private void initSystemBar() {  
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {  
+            setTranslucentStatus(true);  
+        }  
+        SystemBarTintManager tintManager = new SystemBarTintManager(this);  
+        tintManager.setStatusBarTintEnabled(true);  
+        //使用颜色资源   
+        //tintManager.setStatusBarTintResource(R.color.systemBar_color);   
+        //使用图片资源   
+        tintManager.setStatusBarTintDrawable(getResources().getDrawable(R.drawable.ic_launcher));  
+          
+    }  
+
+	private void setTranslucentStatus(boolean on) {    
+        Window win = getWindow();    
+        WindowManager.LayoutParams winParams = win.getAttributes();    
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;    
+        if (on) {    
+            winParams.flags |= bits;    
+        } else {    
+            winParams.flags &= ~bits;    
+        }    
+        win.setAttributes(winParams);  
+	}
 	
 	@Override
 	public Loader<List<DemoEntry>> onCreateLoader(int id, Bundle args) {

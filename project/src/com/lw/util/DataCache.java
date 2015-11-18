@@ -19,7 +19,7 @@ import android.content.Context;
 
 public class DataCache extends AsyncTaskLoader<List<DemoEntry>>{
 	
-	private static final String URL = "http://10.0.11.197:8080/23CodeServer/query";
+	private static final String URL = "http://10.0.11.201:8080/23CodeServer/query";
 	
 	private List<DemoEntry> mDemoEntries = new ArrayList<DemoEntry>();
 
