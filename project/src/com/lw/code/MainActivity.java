@@ -17,17 +17,19 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements LoaderCallbacks<List<DemoEntry>>{
 	
 	private StaggeredGridView mGridView;
-	private BaseAdapter mAdapter;
+	private StaggeredAdapter mAdapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		initSystemBar();
 		mGridView = (StaggeredGridView) findViewById(R.id.staggeredGridView1);
+		mGridView.setEmptyView(getLayoutInflater().inflate(R.layout.empty_layout, null));
 			
 		mAdapter = new StaggeredAdapter(this, DataCache.getInstance(this).getData());
 		mGridView.setAdapter(mAdapter);
@@ -55,9 +57,9 @@ public class MainActivity extends Activity implements LoaderCallbacks<List<DemoE
         }  
         SystemBarTintManager tintManager = new SystemBarTintManager(this);  
         tintManager.setStatusBarTintEnabled(true);  
-        //使用颜色资源   
+        //使锟斤拷锟斤拷色锟斤拷源   
         //tintManager.setStatusBarTintResource(R.color.systemBar_color);   
-        //使用图片资源   
+        //使锟斤拷图片锟斤拷源   
         tintManager.setStatusBarTintDrawable(getResources().getDrawable(R.drawable.ic_launcher));  
           
     }  
@@ -83,6 +85,8 @@ public class MainActivity extends Activity implements LoaderCallbacks<List<DemoE
 	@Override
 	public void onLoadFinished(Loader<List<DemoEntry>> loader, List<DemoEntry> data) {
 		System.out.println("onLoadFinished>"+data.size());
+		Toast.makeText(this, "Load finish", Toast.LENGTH_SHORT).show();
+		mAdapter.setDatas(data);
 		mAdapter.notifyDataSetChanged();
 	}
 

@@ -14,11 +14,9 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AnimationSet;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 
@@ -33,7 +31,7 @@ public class DownloadProgressBar extends View {
 
 	private static final String TAG = DownloadProgressBar.class.getSimpleName();
 	private static final int DEFAULT_PROGRESS_DURATION = 1000;
-	private static final int DEFAULT_RESULT_DURATION = 1000;
+	private static final int DEFAULT_RESULT_DURATION = 500;
 	private static final float DEFAULT_OVERSHOOT_VALUE = 2.5f;
 	private static final int DEFAULT_TEXT_COLOR = Color.BLACK;
 
@@ -200,7 +198,7 @@ public class DownloadProgressBar extends View {
 	private void setupAnimations() {
 		mPath = new Path();
 		mOvershootInterpolator = new OvershootInterpolator(mOvershootValue);
-		mArrowLineToDot = ValueAnimator.ofFloat(0, mRadius / 4);
+		mArrowLineToDot = ValueAnimator.ofFloat(0, mRadius / 4); 
 		mArrowLineToDot.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 			@Override
 			public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -208,7 +206,7 @@ public class DownloadProgressBar extends View {
 				invalidate();
 			}
 		});
-		mArrowLineToDot.setDuration(200);
+		mArrowLineToDot.setDuration(100);
 		mArrowLineToDot.addListener(new Animator.AnimatorListener() {
 			@Override
 			public void onAnimationStart(Animator animator) {
@@ -263,15 +261,16 @@ public class DownloadProgressBar extends View {
 
 			}
 		});
-		mArrowLineToHorizontalLine.setDuration(600);
-		mArrowLineToHorizontalLine.setStartDelay(400);
+		mArrowLineToHorizontalLine.setDuration(300);
+		mArrowLineToHorizontalLine.setStartDelay(200);
 		mArrowLineToHorizontalLine.setInterpolator(mOvershootInterpolator);
 
 		mDotToProgressAnimation = ValueAnimator.ofFloat(0, mRadius);
+		//粗略估算弹出部分的值。measure the over height
 		mOvershootPx = (mOvershootInterpolator.getInterpolation(0.5f) - 1) * mRadius;
 		System.out.println("mOvershootPx=" + mOvershootPx);
-		mDotToProgressAnimation.setDuration(600);
-		mDotToProgressAnimation.setStartDelay(600);
+		mDotToProgressAnimation.setDuration(300);
+		mDotToProgressAnimation.setStartDelay(300);
 		mDotToProgressAnimation.setInterpolator(mOvershootInterpolator);
 		mDotToProgressAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 			@Override
@@ -312,7 +311,7 @@ public class DownloadProgressBar extends View {
 		mArrowToLineAnimatorSet.playTogether(mArrowLineToDot, mArrowLineToHorizontalLine, mDotToProgressAnimation);
 
 		mProgressAnimation = ValueAnimator.ofFloat(0, 360f);
-		mProgressAnimation.setStartDelay(500);
+		mProgressAnimation.setStartDelay(200);
 		mProgressAnimation.setInterpolator(new LinearInterpolator());
 		mProgressAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 			@Override
@@ -377,8 +376,11 @@ public class DownloadProgressBar extends View {
 						} else if (mResultState == State.ANIMATING_SUCCESS) {
 							if (mSuccessType == SuccessType.TYPE_OK)
 								mSuccessAnimation.start();
-							else if (mSuccessType == SuccessType.TYPE_START)
+							else if (mSuccessType == SuccessType.TYPE_START) {
+							    mPath.reset();
+							    mPath.moveTo(0, 0);
 								mSucessAnimatorSet.start();
+							}
 						}
 					}
 				}
@@ -488,8 +490,8 @@ public class DownloadProgressBar extends View {
 		mProgressAnimationSet.playSequentially(mProgressAnimation);
 
 		mErrorAnimation = ValueAnimator.ofFloat(0, mRadius / 4);
-		mErrorAnimation.setDuration(600);
-		mErrorAnimation.setStartDelay(500);
+		mErrorAnimation.setDuration(300);
+		mErrorAnimation.setStartDelay(200);
 		mErrorAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
 		mErrorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 			@Override
@@ -533,10 +535,10 @@ public class DownloadProgressBar extends View {
 
 			}
 		});
-
+		//TYPE_OK
 		mSuccessAnimation = ValueAnimator.ofFloat(0, mRadius / 4);
-		mSuccessAnimation.setDuration(600);
-		mSuccessAnimation.setStartDelay(500);
+		mSuccessAnimation.setDuration(300);
+		mSuccessAnimation.setStartDelay(200);
 		mSuccessAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
 		mSuccessAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 			@Override
@@ -556,17 +558,20 @@ public class DownloadProgressBar extends View {
 
 			@Override
 			public void onAnimationEnd(Animator animator) {
-				postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						if (mOnProgressUpdateListener != null) {
-							mOnProgressUpdateListener.onAnimationEnded();
-						}
-						mState = State.IDLE;
-						resetValues();
-						invalidate();
-					}
-				}, mResultDuration);
+                if (mOnProgressUpdateListener != null) {
+                    mOnProgressUpdateListener.onAnimationEnded();
+                }
+                if (mWhichProgress == State.ANIMATING_PROGRESS) {
+                    postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            mState = State.IDLE;
+                            resetValues();
+                            invalidate();
+                        }
+                    }, mResultDuration);
+                }
 			}
 
 			@Override
@@ -661,7 +666,7 @@ public class DownloadProgressBar extends View {
 
 		mSucessAnimatorSet = new AnimatorSet();
 		mSucessAnimatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
-		mSucessAnimatorSet.setDuration(1000);
+		mSucessAnimatorSet.setDuration(500);
 		mSucessAnimatorSet.playSequentially(line1, line2, line3);
 		mSucessAnimatorSet.addListener(new AnimatorListener() {
 
@@ -679,17 +684,20 @@ public class DownloadProgressBar extends View {
 
 			@Override
 			public void onAnimationEnd(Animator arg0) {
+                if (mOnProgressUpdateListener != null) {
+                    mOnProgressUpdateListener.onAnimationEnded();
+                }
+                if(mWhichProgress == State.ANIMATING_PROGRESS) {
 				postDelayed(new Runnable() {
 					@Override
 					public void run() {
-						if (mOnProgressUpdateListener != null) {
-							mOnProgressUpdateListener.onAnimationEnded();
-						}
+
 						mState = State.IDLE;
 						resetValues();
 						invalidate();
 					}
 				}, mResultDuration);
+                }
 			}
 
 			@Override
@@ -806,26 +814,46 @@ public class DownloadProgressBar extends View {
 		invalidate();
 	}
 
-	public void playToError() {
+	public boolean playToError() {
 		mWhichProgress = State.ANIMATING_PROGRESS;
 		mResultState = State.ANIMATING_ERROR;
 		mArrowToLineAnimatorSet.start();
 		invalidate();
+        return true;
 	}
 
-	public void playManualProgressAnimation() {
+	public boolean playManualProgressAnimation() {
+	    if(mState != State.IDLE)
+	        return false;
 		mWhichProgress = State.ANIMATING_MANUAL_PROGRESS;
 		mResultState = State.ANIMATING_SUCCESS;
 		mArrowToLineAnimatorSet.start();
 		invalidate();
+        return true;
+	}
+	
+	public void setSuceeceState() {
+	    if(mSuccessType == SuccessType.TYPE_OK) {
+	        mSuccessAnimation.start();
+	    } else if(mSuccessType == SuccessType.TYPE_START) {
+            mPath.reset();
+            mPath.moveTo(0, 0);
+            mSucessAnimatorSet.start();
+	    }
 	}
 
-	public void abortDownload() {
+	public boolean abortDownload() {
 		// if(mExpandAnimation.isRunning() || mProgressAnimation.isRunning()) {
 		// mProgressAnimationSet.cancel();
 		// mCollapseAnimation.start();
 		// invalidate();
 		// }
+        if(mState == State.IDLE || mState == State.ANIMATING_SUCCESS)
+            return false;
+        if(mArrowToLineAnimatorSet.isRunning()) {
+            mArrowToLineAnimatorSet.cancel();
+            invalidate();
+        }
 		if (mProgressAnimation.isRunning()) {
 			mProgressAnimationSet.cancel();
 			invalidate();
@@ -835,18 +863,21 @@ public class DownloadProgressBar extends View {
 			invalidate();
 		}
 		mErrorAnimation.start();
+        return true;
 	}
 
 	public void setErrorResultState() {
 		if (mSucessAnimatorSet.isRunning() || mSuccessAnimation.isRunning() || mErrorAnimation.isRunning())
 			return;
 		mResultState = State.ANIMATING_ERROR;
+		invalidate();
 	}
 
 	public void setSuccessResultState() {
 		if (mSucessAnimatorSet.isRunning() || mSuccessAnimation.isRunning() || mErrorAnimation.isRunning())
 			return;
 		mResultState = State.ANIMATING_SUCCESS;
+		invalidate();
 	}
 
 	public void setProgress(int value) {

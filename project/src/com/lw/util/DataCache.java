@@ -19,7 +19,9 @@ import android.content.Context;
 
 public class DataCache extends AsyncTaskLoader<List<DemoEntry>>{
 	
-	private static final String URL = "http://10.0.11.201:8080/23CodeServer/query";
+	private static final String URL = "http://sunsonfly.synology.me:7070/CodeServer/query";
+	
+	private static final String FILE_BASE_URL = "http://sunsonfly.synology.me:7070/";
 	
 	private List<DemoEntry> mDemoEntries = new ArrayList<DemoEntry>();
 
@@ -43,18 +45,22 @@ public class DataCache extends AsyncTaskLoader<List<DemoEntry>>{
 	
 	public List<DemoEntry> loadDataFromNet() {
 		try {
-			System.out.println("loadDataFromNet");
 			String data = HttpUtil.readString(URL);
+			System.out.println("loadDataFromNet data="+data);
 			Gson gson = new Gson();
 			Type type = new TypeToken<List<DemoEntry>>(){}.getType();
 			List<DemoEntry> des = gson.fromJson(data, type);
+			for(DemoEntry de : des) {
+			    de.setIcon(FILE_BASE_URL+de.getIcon());
+			    de.setApk(FILE_BASE_URL+de.getApk());
+			}
 			mDemoEntries.clear();
 			mDemoEntries.addAll(des);
 			savaCache();
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

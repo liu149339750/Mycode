@@ -1,8 +1,5 @@
 package com.panwrona.downloadprogressbar;
 
-import android.animation.TypeEvaluator;
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -21,7 +18,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final DownloadProgressBar downloadProgressView = (DownloadProgressBar)findViewById(R.id.dpv3);
-//        downloadProgressView.setSuccessAnimaType(SuccessType.TYPE_START);
+        downloadProgressView.setSuccessAnimaType(SuccessType.TYPE_START);
         final TextView successTextView = (TextView)findViewById(R.id.success_text_view);
         successTextView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -28,7 +28,7 @@ public class Util {
 	}
 	
 	public static File getApkDirectory() {
-		if(APK_DIRECTORY != null)
+		if(APK_DIRECTORY != null && APK_DIRECTORY.exists())
 			return APK_DIRECTORY;
 		File file = Environment.getExternalStorageDirectory();
 		APK_DIRECTORY = new File(file, "demo");

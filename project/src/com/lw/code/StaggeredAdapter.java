@@ -40,6 +40,10 @@ public class StaggeredAdapter extends BaseAdapter implements ImageCache.OnImageL
             mViewDimensionCache = null;
         }
 	}
+	
+	public void setDatas(List<DemoEntry> datas) {
+	    mEntries = datas;
+	}
 
 	@Override
 	public int getCount() {
@@ -61,7 +65,6 @@ public class StaggeredAdapter extends BaseAdapter implements ImageCache.OnImageL
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
 		try{
-		System.out.println("position="+position);
 		if(convertView == null) {
 			convertView = mInflater.inflate(R.layout.staggerd_item, null);
 			holder = new ViewHolder();
