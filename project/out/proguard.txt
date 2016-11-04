@@ -1,0 +1,24 @@
+# view res/layout/activity_main.xml #generated:13
+-keep class com.etsy.android.grid.StaggeredGridView { <init>(...); }
+
+# view AndroidManifest.xml #generated:55
+-keep class com.lw.code.DetailActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:18
+-keep class com.lw.code.MainActivity { <init>(...); }
+
+# view res/layout/project_detail.xml #generated:35
+-keep class com.panwrona.downloadprogressbar.library.DownloadProgressBar { <init>(...); }
+
+# view AndroidManifest.xml #generated:28
+-keep class com.ryg.dynamicload.DLProxyActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:37
+-keep class com.ryg.dynamicload.DLProxyFragmentActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:46
+-keep class com.ryg.dynamicload.DLProxyService { <init>(...); }
+
+# onClick res/layout/project_detail.xml #generated:15
+-keepclassmembers class * { *** back(...); }
+

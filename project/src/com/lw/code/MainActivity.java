@@ -6,6 +6,7 @@ import com.etsy.android.grid.StaggeredGridView;
 import com.lw.util.DataCache;
 
 import android.app.Activity;
+import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
 import android.content.Loader;
@@ -27,6 +28,7 @@ public class MainActivity extends Activity implements LoaderCallbacks<List<DemoE
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		System.out.println("onCreate");
 		initSystemBar();
 		mGridView = (StaggeredGridView) findViewById(R.id.staggeredGridView1);
 		mGridView.setEmptyView(getLayoutInflater().inflate(R.layout.empty_layout, null));
@@ -35,6 +37,7 @@ public class MainActivity extends Activity implements LoaderCallbacks<List<DemoE
 		mGridView.setAdapter(mAdapter);
 		
 		getLoaderManager().initLoader(0, null, this);
+		LoaderManager.enableDebugLogging(true);
         
 		
 		mGridView.setOnItemClickListener(new OnItemClickListener() {
@@ -92,6 +95,6 @@ public class MainActivity extends Activity implements LoaderCallbacks<List<DemoE
 
 	@Override
 	public void onLoaderReset(Loader<List<DemoEntry>> loader) {
-		
+		System.out.println("onLoaderReset");
 	}
 }

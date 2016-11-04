@@ -31,6 +31,8 @@ public class DataCache extends AsyncTaskLoader<List<DemoEntry>>{
 	
 	private static final String CACHE_NAME = "cache";
 	
+	boolean loadfinish;
+	
 	public DataCache(Context context) {
 		super(context);
 		mContext = context;
@@ -56,6 +58,7 @@ public class DataCache extends AsyncTaskLoader<List<DemoEntry>>{
 			}
 			mDemoEntries.clear();
 			mDemoEntries.addAll(des);
+			loadfinish = true;
 			savaCache();
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
@@ -65,6 +68,11 @@ public class DataCache extends AsyncTaskLoader<List<DemoEntry>>{
 			e.printStackTrace();
 		}
 		return mDemoEntries;
+	}
+	
+	@Override
+	protected void onReset() {
+	    loadfinish = false;
 	}
 	
 	private void savaCache() {
@@ -78,10 +86,8 @@ public class DataCache extends AsyncTaskLoader<List<DemoEntry>>{
 			out.write(json.getBytes());
 			out.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -95,19 +101,20 @@ public class DataCache extends AsyncTaskLoader<List<DemoEntry>>{
 			List<DemoEntry> des = gson.fromJson(json, type);
 			mDemoEntries.clear();
 			mDemoEntries.addAll(des);
+			abandon();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
-	
+	//when activity onstart,this will be invoked .this is for db query,for net not suited
 	@Override
 	protected void onStartLoading() {
-		forceLoad();
+	    System.out.println("onStartLoading:"+isStarted());
+	    if(!loadfinish)
+	        forceLoad();
 	}
 	
 	public List<DemoEntry> getData() {
@@ -121,6 +128,7 @@ public class DataCache extends AsyncTaskLoader<List<DemoEntry>>{
 	
 	@Override
 	public void deliverResult(List<DemoEntry> data) {
+	    System.out.println("deliverResult");
 		super.deliverResult(mDemoEntries);
 	}
 

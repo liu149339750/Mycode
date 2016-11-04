@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.ryg.dynamicload.DLBasePluginActivity;
+import com.ryg.dynamicload.internal.DLIntent;
 import com.ryg.dynamicload.sample.docommon.HostInterface;
 import com.ryg.dynamicload.sample.docommon.HostInterfaceManager;
 
@@ -40,8 +41,9 @@ public class MainActivity extends DLBasePluginActivity {
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                HostInterface hostInterface = HostInterfaceManager.getHostInterface();
-                hostInterface.hostMethod(that);
+//                HostInterface hostInterface = HostInterfaceManager.getHostInterface();
+//                hostInterface.hostMethod(that);
+                startPluginActivity(new DLIntent(getPackageName(), A.class));
             }
         });
         return layout;

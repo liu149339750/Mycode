@@ -42,4 +42,15 @@ public class Util {
 		File file = new File(getApkDirectory(),name);
 		return file;
 	}
+	
+	public static void printStackTrace() {
+        StackTraceElement[] stackElements = new Throwable().getStackTrace();
+        if(stackElements != null)
+        {
+            for(int i = 0; i < stackElements.length; i++)
+            {
+                System.out.println(""+ stackElements[i]); 
+            }
+        }
+    }
 }

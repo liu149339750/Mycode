@@ -156,6 +156,7 @@ public class DownloadProgressBar extends View {
 		mProgressTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 		mProgressTextPaint.setColor(mTextColor);
 		mProgressTextPaint.setTextAlign(Align.CENTER);
+		mProgressTextPaint.setTextSize(mRadius/3);
 
 		mState = State.IDLE;
 		setupAnimations();

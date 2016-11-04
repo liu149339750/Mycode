@@ -74,7 +74,8 @@
     <property name="java.compiler.classpath" value="" />
 
     <property name="dl-lib" value="" />
-    <property name="external-lib" value="lib" />
+    <property name="external-lib" value="" />
+    <property name="export-dl" value="false" />
 
     <!-- Renderscript options -->
     <property name="renderscript.debug.opt.level" value="O0" />
@@ -908,7 +909,18 @@
                         </dex-helper>
                     </then>
                     <else>
-                        <dex-helper />
+			<if condition="${export-dl}">
+			    <then>
+				<dex-helper nolocals="true">
+                            		<external-libs>
+                                		<fileset file="${dl-lib}" />
+                            		</external-libs>
+				</dex-helper>
+			    </then>
+			    <else>
+				<dex-helper/>
+			    </else>
+			</if>
                     </else>
                 </if>
             </do-only-if-not-library>

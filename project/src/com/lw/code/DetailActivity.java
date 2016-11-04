@@ -61,6 +61,10 @@ public class DetailActivity extends Activity{
 		});
 	}
 	
+	public void back(View v) {
+	    finish();
+	}
+	
 	private void checkDownload() {
 		String name = Util.getName(mEntry.apk);
 		File file = new File(Util.getApkDirectory(),name);
