@@ -22,7 +22,7 @@
         - install targets,
         - help target
     -->
-
+    <property file="${global.property.file}" />
     <!-- ******************************************************* -->
     <!-- **************** Overridable Properties *************** -->
     <!-- ******************************************************* -->
@@ -254,6 +254,14 @@
         </sequential>
     </macrodef>
 
+    <macrodef name="prepare-default-value">
+        <sequential>
+            <condition property="out.release.apk.dir" else="${out.absolute.dir}">
+                <isset property="out.release.apk.dir" />
+            </condition>
+	    <echo> the out.release.apk.dir is ${out.release.apk.dir} </echo>
+        </sequential>
+    </macrodef>
 
     <!-- Configurable macro, which allows to pass as parameters output directory,
          output dex filename and external libraries to dex (optional) -->
@@ -428,6 +436,8 @@
                 <property name="tested.project.absolute.dir" location="${tested.project.dir}" />
             </then>
         </if>
+
+	<prepare-default-value />
 
         <!-- get the project manifest package -->
         <xpath input="${manifest.abs.file}"
@@ -1116,9 +1126,10 @@
 
     <target name="-set-release-mode" depends="-set-mode-check">
         <property name="out.packaged.file" location="${out.absolute.dir}/${ant.project.name}-release-unsigned.apk" />
-        <property name="out.final.file" location="${out.absolute.dir}/${ant.project.name}-release.apk" />
+        <property name="out.final.file" value="${out.release.apk.dir}/${ant.project.name}.apk" />
         <property name="build.is.mode.set" value="true" />
-
+	<echo>out.final.file is ${out.final.file}</echo>
+<echo>out.absolute.dir is ${out.absolute.dir}</echo>
         <!-- record the current build target -->
         <property name="build.target" value="release" />
 

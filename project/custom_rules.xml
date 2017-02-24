@@ -1,0 +1,11 @@
+<project name="Main" default="replace">
+    <target name="replace" depends="time" >
+	<replaceregexp file="AndroidManifest.xml" match="versionName=&quot;(.*)&quot;" replace="versionName=&quot;${TODAY}&quot;"/>
+    </target>
+
+<target name="time" >
+   <tstamp>  
+     <format property="TODAY" pattern="yyyyMMddHHmm"/>  
+   </tstamp>  
+</target>
+</project>
