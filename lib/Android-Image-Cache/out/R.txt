@@ -1,4 +1,0 @@
-int id ic__load_id 0x7f030001
-int id ic__uri 0x7f030000
-int id progress 0x7f030002
-int layout list_loading 0x7f020000

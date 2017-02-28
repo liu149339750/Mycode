@@ -1,0 +1,1 @@
+1.Android-Image-Cache这个库无法提交build.xml与local.properties，提交build(backup).xml文件，local.properties不需要。
