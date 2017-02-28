@@ -13,6 +13,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
@@ -913,6 +914,7 @@ public class DownloadProgressBar extends View {
 
 	@Override
 	protected Parcelable onSaveInstanceState() {
+	    Log.v(TAG, "onSaveInstanceState");
 		Parcelable superState = super.onSaveInstanceState();
 		SavedState savedState = new SavedState(superState);
 		savedState.mState = mState;
@@ -954,8 +956,8 @@ public class DownloadProgressBar extends View {
 		return tab;
 	}
 
-	private void setCurrentPlayTimeByStateAndPlay(long[] tab, State mState) {
-		switch (mState) {
+	private void setCurrentPlayTimeByStateAndPlay(long[] tab, State state) {
+		switch (state) {
 		case ANIMATING_LINE_TO_DOT:
 			mArrowToLineAnimatorSet.start();
 			for (int i = 0; i < mArrowToLineAnimatorSet.getChildAnimations().size(); i++) {
@@ -990,7 +992,8 @@ public class DownloadProgressBar extends View {
 	protected void onRestoreInstanceState(Parcelable state) {
 		if (state instanceof SavedState) {
 			SavedState savedState = (SavedState) state;
-			mState = savedState.mState;
+			if(savedState.mState != null)
+			    mState = savedState.mState;
 			super.onRestoreInstanceState(savedState.getSuperState());
 			if (mState != State.IDLE) {
 				continueAnimation(mState, savedState.mmCurrentPlayTime);
@@ -1000,8 +1003,9 @@ public class DownloadProgressBar extends View {
 		}
 	}
 
-	private void continueAnimation(State mState, long[] mmCurrentPlayTime) {
-		setCurrentPlayTimeByStateAndPlay(mmCurrentPlayTime, mState);
+	private void continueAnimation(State state, long[] mmCurrentPlayTime) {
+	    if(state != null)
+	        setCurrentPlayTimeByStateAndPlay(mmCurrentPlayTime, mState);
 	}
 
 	static class SavedState extends BaseSavedState {

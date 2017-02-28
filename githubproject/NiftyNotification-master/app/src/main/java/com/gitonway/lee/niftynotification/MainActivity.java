@@ -4,20 +4,34 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.gitonway.lee.niftynotification.lib.Configuration;
 import com.gitonway.lee.niftynotification.lib.Effects;
 import com.gitonway.lee.niftynotification.lib.NiftyNotificationView;
+import com.ryg.dynamicload.DLBasePluginActivity;
 
-public class MainActivity extends Activity {
+public class MainActivity extends DLBasePluginActivity {
     private Effects effect;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ViewGroup group = (ViewGroup) findViewById(R.id.buttons);
+        for(int i=0;i<group.getChildCount();i++) {
+            group.getChildAt(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showNotify(v);
+                }
+            });
+        }
     }
+
+
 
     public void showNotify(View v){
 
@@ -36,7 +50,7 @@ public class MainActivity extends Activity {
 
 
 
-        NiftyNotificationView.build(this,msg, effect,R.id.mLyout)
+        NiftyNotificationView.build(that,msg, effect,R.id.mLyout)
                 .setIcon(R.drawable.lion)         //You must call this method if you use ThumbSlider effect
                 .show();
 

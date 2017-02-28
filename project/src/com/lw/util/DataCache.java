@@ -19,9 +19,13 @@ import android.content.Context;
 
 public class DataCache extends AsyncTaskLoader<List<DemoEntry>>{
 	
-	private static final String URL = "http://sunsonfly.synology.me:7070/CodeServer/query";
-	
-	private static final String FILE_BASE_URL = "http://sunsonfly.synology.me:7070/";
+//	private static final String URL = "http://sunsonfly.synology.me:7070/CodeServer/query";
+//	
+//	private static final String FILE_BASE_URL = "http://sunsonfly.synology.me:7070/";
+    
+    private static final String URL = "http://122.114.157.70:8080/CodeServer/query";
+    
+    private static final String FILE_BASE_URL = "http://122.114.157.70:8080/";
 	
 	private List<DemoEntry> mDemoEntries = new ArrayList<DemoEntry>();
 
