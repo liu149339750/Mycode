@@ -152,13 +152,13 @@ public class Manager extends Handler {
         }
 
         isSticky=sticky;
-
+        System.out.println("notifyQueue size = " + notifyQueue.size());
         final NiftyNotificationView currentNotify = notifyQueue.peek();
-
         if (null == currentNotify.getActivity()) {
-            notifyQueue.poll();
+//            notifyQueue.poll();
+            notifyQueue.clear();
+            return;
         }
-
         if (!currentNotify.isShowing()) {
             sendMessage(currentNotify, Messages.ADD_TO_VIEW);
         } else {
@@ -203,6 +203,7 @@ public class Manager extends Handler {
                 @Override
                 @TargetApi(16)
                 public void onGlobalLayout() {
+                    System.out.println("onGlobalLayout");
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                         notifyView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     } else {

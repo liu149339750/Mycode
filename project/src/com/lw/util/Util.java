@@ -32,6 +32,8 @@ public class Util {
 			return APK_DIRECTORY;
 		File file = Environment.getExternalStorageDirectory();
 		APK_DIRECTORY = new File(file, "demo");
+	    if(APK_DIRECTORY.isFile())
+	         APK_DIRECTORY.delete();
 		if(!APK_DIRECTORY.exists())
 			APK_DIRECTORY.mkdirs();
 		return APK_DIRECTORY;

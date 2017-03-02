@@ -25,6 +25,7 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -88,6 +89,19 @@ public class NiftyNotificationView {
     private void init(Effects effects){
         this.iconDrawable=null;
         this.iconRes=0;
+
+        viewGroup.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                System.out.println("viewGroup onWindowAttached");
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                System.out.println("viewGroup onWindowDetached");
+                activity = null;
+            }
+        });
     }
     public static NiftyNotificationView build(Activity activity, CharSequence text, Effects effects, int viewGroupResId) {
         return new NiftyNotificationView(activity, text, effects, (ViewGroup) activity.findViewById(viewGroupResId));

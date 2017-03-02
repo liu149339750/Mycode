@@ -57,7 +57,7 @@ public class FileDownload extends Thread {
 					msg.what = HTTP_SUCESS;
 					msg.arg1 = (int) mTotal;
 					msg.arg2 = (int) mDown;
-					mHandler.sendMessageDelayed(msg, 1000);
+					mHandler.sendMessageDelayed(msg, 100);
 				}
 			}
 			fos.close();
