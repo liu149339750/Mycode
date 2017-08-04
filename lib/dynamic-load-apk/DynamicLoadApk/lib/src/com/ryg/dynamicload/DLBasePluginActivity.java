@@ -19,7 +19,6 @@
 package com.ryg.dynamicload;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -249,6 +248,8 @@ public class DLBasePluginActivity extends Activity implements DLPlugin {
     public void onBackPressed() {
         if (mFrom == DLConstants.FROM_INTERNAL) {
             super.onBackPressed();
+        } else {
+            mProxyActivity.finish();
         }
     }
 

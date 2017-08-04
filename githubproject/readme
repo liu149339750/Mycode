@@ -1,0 +1,2 @@
+design与cardview-v7会互相影响，插件中使用了cardview-v7，宿主中也使用cardview-v7与design，如果design:25.0.0（不包含）版本以上，会导致cardview-v7找不到
+插件中不能使用ApplicationContext获取资源文件，否则会出现找不到资源文件的情况

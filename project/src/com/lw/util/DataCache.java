@@ -8,7 +8,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.client.ClientProtocolException;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -64,10 +63,7 @@ public class DataCache extends AsyncTaskLoader<List<DemoEntry>>{
 			mDemoEntries.addAll(des);
 			loadfinish = true;
 			savaCache();
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
+		}  catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
